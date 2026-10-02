@@ -1,14 +1,45 @@
-import { useState } from 'react'
+/*import { useState } from 'react'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import viteLogo from './assets/vite.svg'*/
+import homePageImg from "./assets/ikea_homepage image.png"
+import descriptionIMG from "./assets/description image.png"
+import truckIMG from "./assets/ikea_truck image.png"
 import './App.css'
 
+import Header from "./components/header";
+
+function App(){
+  return(
+    <>
+    <Header/>
+    <section id="center">
+      <div className="infoSection">
+        <img src={homePageImg} className="baseIMG" width="500" height="300" alt=""/>
+      </div>
+      <div className="text">
+        <h2>We help you return and sell your IKEA products</h2>
+        <button 
+          type="button"
+          className="formsButton">
+            Click me!
+          </button>
+      </div>
+    </section>
+      <div className="descriptionIMG">
+        <img src={descriptionIMG} className="descIMG" width="700" height="200" alt=""/>
+        <img src={truckIMG} className="truckIMG" width="900" height="500" alt=""/>
+      </div>
+    </>
+  )
+}
+/*
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
+    <Header/>
       <section id="center">
         <div className="hero">
           <img src={heroImg} className="base" width="170" height="179" alt="" />
@@ -117,6 +148,6 @@ function App() {
       <section id="spacer"></section>
     </>
   )
-}
+}*/
 
 export default App
