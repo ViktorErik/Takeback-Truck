@@ -11,6 +11,7 @@ import MapComponent from "./components/MapComponent";
 import Footer from "./components/footer";
 import Header from "./components/header";
 import FAQ from "./components/faq";
+import Steps from "./components/stepGuide";
 
 function App(){
   return(
@@ -18,19 +19,18 @@ function App(){
     <Header/>
     <section id="center">
       <div className="infoSection">
+        <Steps/>
         <img src={homePageImg} className="baseIMG" width="500" height="300" alt=""/>
       </div>
-      <div className="text">
-        <h2>We help you return and sell your IKEA products</h2>
+    </section>
+    <div className="bookButton">
         <button 
           type="button"
           className="formsButton">
             Book pickup here
           </button>
       </div>
-    </section>
       <div className="descriptionIMG">
-        <img src={descriptionIMG} className="descIMG" width="700" height="200" alt=""/>
         <img src={truckIMG} className="truckIMG" width="900" height="500" alt=""/>
       </div>
 
@@ -50,6 +50,8 @@ function App(){
   )
 }
 /*
+  <img src={descriptionIMG} className="descIMG" width="700" height="200" alt=""/>
+
 function App() {
   const [count, setCount] = useState(0)
 

@@ -25,6 +25,7 @@
 }
 
 .infoSection{
+  display: flex;
   position: relative;
   
   .baseIMG {
@@ -38,7 +39,7 @@
   margin-top: 100px;
   font-size: 60px;
   padding: 5px 10px;
-  border-radius: 5px;
+  border-radius: 25px;
   color: black;
   background: yellow;
   border: 2px solid transparent;
