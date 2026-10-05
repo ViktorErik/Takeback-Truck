@@ -1,6 +1,7 @@
 import Map, {Marker} from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './MapComponent.css';
+import ikeaTruckIcon from '../assets/ikeaTruckIcon.png';
 
 function MapComponent() {
     const locations = [
@@ -79,7 +80,9 @@ function MapComponent() {
                     anchor="bottom"
                 >
                     <div className="ikea-pin">
-                        <div className="ikea-pin-inner">♻</div>
+                        <div className="ikea-pin-icon">
+                            <img src={ikeaTruckIcon} width='100%' height='100%' alt="IKEA Truck Icon" />
+                        </div>
                     </div>
                 </Marker>
             ))}   
