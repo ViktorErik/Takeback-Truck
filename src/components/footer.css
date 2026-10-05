@@ -1,0 +1,22 @@
+.footer{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 5%;
+    background-color: white;
+}
+
+.footer_nav{
+    display:flex;
+    gap:30px;
+}
+
+.footer_nav a{
+    color:#444;
+    text-decoration: none;
+    font-size:15px;
+}
+
+.footer_nav a:hover{
+    color: #000;
+}

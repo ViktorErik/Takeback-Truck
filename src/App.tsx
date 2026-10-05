@@ -7,7 +7,9 @@ import descriptionIMG from "./assets/description image.png"
 import truckIMG from "./assets/ikea_truck image.png"
 import './App.css'
 
+import Footer from "./components/footer";
 import Header from "./components/header";
+import FAQ from "./components/faq";
 
 function App(){
   return(
@@ -22,7 +24,7 @@ function App(){
         <button 
           type="button"
           className="formsButton">
-            Click me!
+            Book pickup here
           </button>
       </div>
     </section>
@@ -30,6 +32,8 @@ function App(){
         <img src={descriptionIMG} className="descIMG" width="700" height="200" alt=""/>
         <img src={truckIMG} className="truckIMG" width="900" height="500" alt=""/>
       </div>
+      <FAQ/>
+      <Footer/>
     </>
   )
 }
