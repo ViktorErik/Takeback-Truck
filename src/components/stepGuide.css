@@ -1,0 +1,49 @@
+.steps{
+    max-width: 800px;
+    margin: 100px auto;
+}
+
+.step h2{
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.stepList{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.step{
+    display:flex;
+    align-items:flex-start;
+    gap:25px;
+}
+
+.stepNumber{
+    width:50px;
+    height:50px;
+
+    display: flex;
+    align-items:center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background-color: #111;
+    color: white;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    flex-shrink: 0;
+}
+
+.stepContent h3{
+    margin: 0 0 8px;
+}
+
+.stepContent p{
+    margin:0;
+    color:#666;
+    line-height: 1.6;
+}
