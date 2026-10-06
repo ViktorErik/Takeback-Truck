@@ -25,11 +25,15 @@ function App(){
       </div>
 
     <section id="map-section">
-      <div className="map-text">
-        <h2>Find your nearest IKEA pickup-station</h2>
-        <p>We have a wide range of pickup-stations across the country. Find the one closest to you and start your journey towards a more sustainable future.</p>
+      <div className="map-text-container">
+        <div className="map-text-header">
+          <h2>Find your nearest IKEA pickup-station</h2>
+        </div>
+        <div className="map-text-body">
+          <p>We have a wide range of pickup-stations across the country. Find the one closest to you and start your journey towards a more sustainable future.</p>
+        </div>
       </div>
-      <div className="map-container" style={{ width: '100%', height: '500px' }}>
+      <div className="map-container">
         <MapComponent />
       </div>
     </section>

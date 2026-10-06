@@ -13,6 +13,7 @@
 }
 
 #map-section {
+  height:720px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -22,6 +23,33 @@
   @media (max-width: 1024px) {
     padding: 24px 20px;
   }
+}
+
+.map-text-container{
+  margin-right: 16px;
+  margin-left: 16px;
+  height: 100%;
+  border-radius: 20px;
+  border: 1px solid black;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.map-text-header{
+  padding: 32px 24px 32px 24px;
+  text-align: center;
+}
+
+.map-text-body{
+  padding: 0px 24px 32px 24px;
+  text-align: center;
+}
+
+.map-container{
+  margin-left: 16px;
+  margin-right: 16px;
+  width: 100%;
+  height: 100%;
 }
 
 .infoSection{
