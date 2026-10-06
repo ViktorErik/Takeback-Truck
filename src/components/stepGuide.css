@@ -1,49 +1,105 @@
 .steps{
-    max-width: 800px;
-    margin: 100px auto;
+    background: #f5f5f5;
 }
 
-.step h2{
+.stepsHero{
+    display: grid;
+    grid-template-areas: 
+        "title title"
+        "stepGuide image"
+        "button button";
+    grid-template-columns: 3fr 2.5fr;
+    gap: 3px;
+    padding: 5px;
+    min-height: 500px;
+}
+
+.title {
+    grid-area: title;
     text-align: center;
-    margin-bottom: 50px;
+    padding: 20px;
+}
+.title h1{
+    font-size: 48px;
+    line-height: 1.1;
+    margin: 0;
+}
+
+
+.stepsImage {
+    grid-area: image;
+    height: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.stepsImage img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.button{
+    grid-area: button;
+    padding-top: 40px;
+    padding-bottom: 80px;
+
+}
+.bookButton {
+    display: inline-block;
+    width: 600px;
+    height: 70px;
+
+    background: #ffdb00;
+    color: #111;
+
+    padding-top: 25px;
+    padding-bottom: 5px;
+    border-radius: 30px;
+
+    font-size: 90px;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: transform 0.2s ease;
+}
+
+.bookButton:hover {
+    transform: scale(1.03);
 }
 
 .stepList{
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+    /*display: grid;
+    grid-template-columns: 1fr 1fr;*/
+    gap: 25px;
 }
 
 .step{
-    display:flex;
-    align-items:flex-start;
-    gap:25px;
-}
-
-.stepNumber{
-    width:50px;
-    height:50px;
-
     display: flex;
-    align-items:center;
-    justify-content: center;
+    align-items: center;
+    margin:10px;
 
-    border-radius: 50%;
-    background-color: #111;
-    color: white;
-
-    font-size: 20px;
-    font-weight: 600;
-
-    flex-shrink: 0;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
 }
 
-.stepContent h3{
-    margin: 0 0 8px;
+.stepsContainer {
+    grid-area: stepGuide;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 30px;
 }
 
-.stepContent p{
-    margin:0;
-    color:#666;
-    line-height: 1.6;
+.stepsContainer h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 50px;
+}
+
+.stepContent h3 {
+    font-size: 25px;
+    line-height: 1.4;
+    margin: 0;
 }
