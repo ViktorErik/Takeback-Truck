@@ -11,10 +11,18 @@ import Header from "./components/header";
 import FAQ from "./components/faq";
 import Steps from "./components/stepGuide";
 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import InformationPage from "./pages/informationPage";
+
 function App(){
   return(
     <>
+    <BrowserRouter>
     <Header/>
+    <Routes>
+      <Route path="/informationPage" element={<InformationPage />}/>
+      <Route path="/" element={
+        <>
     <section id="center">
       <div className="infoSection">
         <Steps/>
@@ -35,6 +43,11 @@ function App(){
     </section>
     <div className="bottompadding" style={{ height: '100px' }}></div>
       <FAQ/>
+      </>
+      }
+      />
+      </Routes>
+      </BrowserRouter>
       <Footer/>
     </>
   )
