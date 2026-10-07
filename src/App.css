@@ -9,7 +9,9 @@
     gap: 18px;
   }
 }
-
+.descriptionIMG{
+  margin-left:16px;
+}
 .truckIMG{
   border-radius: 20px;
 }
@@ -29,7 +31,8 @@
 .infoSection{
   display: flex;
   position: relative;
-  
+  margin-left:32px;
+  margin-right: 16px;
   .baseIMG {
     width: 500px;
     position: relative;
