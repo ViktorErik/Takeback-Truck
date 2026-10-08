@@ -1,15 +1,15 @@
-.steps{
-    background: #f5f5f5;
-}
+/*.steps{
+    
+}*/
 
 .stepsHero{
     display: grid;
     grid-template-areas: 
         "title title"
-        "stepGuide image"
-        "button button";
-    grid-template-columns: 3fr 2.5fr;
-    min-height: 500px;
+        "stepGuide image";
+    grid-template-columns: minmax(0, 3fr) minmax(0, 4fr);
+    min-height: 600px;
+    column-gap: 32px;
 }
 
 .title {
@@ -23,50 +23,25 @@
     margin: 0;
 }
 
-
-.stepsImage {
-    grid-area: image;
-    height: 100%;
+.stepsContainer {
     min-width: 0;
-    border: 1px solid black;
+    width: auto;
+    background-color: rgb(175, 175, 175);
     border-radius: 20px;
-    margin-left: 16px;
-    overflow: hidden;
+    border:1px solid black;
+    grid-area: stepGuide;
+    padding: 32px 16px 0 16px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.stepsImage img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.button{
-    grid-area: button;
-    padding-top: 40px;
-    padding-bottom: 80px;
-
-}
-.bookButton {
-    display: inline-block;
-    width: 600px;
-    height: 90px;
-
-    background: #ffdb00;
-    color: #111;
-
+.stepsTitle {
+    height: 60px;
+    text-align: center;
+    margin-bottom: 32px;
+    background-color: white;
+    border-radius: 10px;
     align-content: center;
-    border-radius: 30px;
-
-    font-size: 70px;
-    font-weight: 600;
-    text-decoration: none;
-
-    transition: transform 0.2s ease;
-}
-
-.bookButton:hover {
-    transform: scale(1.03);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .stepList{
@@ -79,30 +54,72 @@
 .step{
     display: flex;
     align-items: center;
-    margin:10px;
+    margin:16px 0 16px 0;
 
     background: white;
-    padding: 30px;
+    padding: 10px;
     border-radius: 12px;
-}
-
-.stepsContainer {
-    background-color: rgb(142, 141, 141);
-    border-radius: 20px;
-    border:1px solid black;
-    grid-area: stepGuide;
-    max-width: 1100px;
-    padding-top: 80px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .stepsContainer h2 {
     text-align: center;
     font-size: 36px;
-    margin-bottom: 50px;
 }
 
 .stepContent h3 {
-    font-size: 25px;
-    line-height: 1.4;
+    font-size: 20px;
+    line-height: 32px;
     margin: 0;
+}
+
+.button{
+    grid-area: button;
+    padding-top: 40px;
+    padding-bottom: 55px;
+}
+.bookButton {
+    display: inline-block;
+    width: 100%;
+    height: 90px;
+
+    background: #ffdb00;
+    color: #111;
+
+    align-content: center;
+    border-radius: 20px;
+
+    font-size: 70px;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: transform 0.2s ease;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bookButton:hover {
+    transform: scale(1.01);
+    background: #eece00;
+}
+
+.stepsImageContainer {
+    min-width: 0;
+    width: auto;
+    grid-area: image;
+    justify-content: center;
+}
+.stepsImage {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    border: 1px solid black;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stepsImage img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
 }

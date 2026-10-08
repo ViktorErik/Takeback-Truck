@@ -16,7 +16,7 @@ import InformationPage from "./pages/informationPage";
 
 function App(){
   return(
-    <>
+    <div className="app">
     <BrowserRouter>
     <Header/>
     <Routes>
@@ -28,10 +28,14 @@ function App(){
         <Steps/>
       </div>
     </section>
-      <div className="descriptionIMG">
-        <img src={truckIMG} className="truckIMG" width="900" height="500" alt=""/>
+    <section id="sustainability-section">
+      <div className="truckIMG-container">
+        <img src={truckIMG} className="truckIMG" alt=""/>
       </div>
-
+      <div className="sustainability-text-container">
+        HEJEHEHE
+      </div>
+    </section>
     <section id="map-section">
       <div className="map-text-container">
         <div className="map-text-header">
@@ -45,6 +49,7 @@ function App(){
         <MapComponent />
       </div>
     </section>
+
     <div className="bottompadding" style={{ height: '100px' }}></div>
       <FAQ/>
       </>
@@ -53,7 +58,7 @@ function App(){
       </Routes>
       </BrowserRouter>
       <Footer/>
-    </>
+    </div>
   )
 }
 

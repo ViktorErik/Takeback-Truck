@@ -1,5 +1,5 @@
 import Map, {Marker, Popup} from 'react-map-gl/mapbox';
-import { useState, useEffect, useRef } from 'react';
+import { useState} from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './MapComponent.css';
 import ikeaTruckIcon from '../assets/ikeaTruckIcon.png';
@@ -98,7 +98,7 @@ function MapComponent() {
                     zoom: 13
                 }}
                 mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
-                style={{ width: '100%', height: '100%', borderRadius: '20px', border: '1px solid black' }}
+                style={{ borderRadius: '20px', border: '1px solid black' }}
                 mapStyle="mapbox://styles/mapbox/standard"
             >
             {locations.map((location) => (
