@@ -3,9 +3,6 @@ import './informationPage.css'
 function informationPage()
 {
     return(
-        <button className="login">
-            Hello! Log in
-        </button>
         <div className="info-text-container">
             <div className="info-text-header">
                 <h1>About our project</h1>
