@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import homePageImg from "../assets/ikea_homepage image.png"
 import "./stepGuide.css";
 
@@ -44,7 +45,7 @@ function Steps(){
             </div>
             
             <div className="button">
-                <a href="/book-pickpup" className="bookButton">Book a pickup</a>
+                <Link to="/booking" className="bookButton">Book a pickup</Link>
             </div>
         </div>
     </section>

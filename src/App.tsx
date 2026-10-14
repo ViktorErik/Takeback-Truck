@@ -13,6 +13,8 @@ import Steps from "./components/stepGuide";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import InformationPage from "./pages/informationPage";
+import BookingPage from "./pages/BookingPage"; 
+ 
 
 function App(){
   return(
@@ -21,6 +23,7 @@ function App(){
     <Header/>
     <Routes>
       <Route path="/informationPage" element={<InformationPage />}/>
+      <Route path="/booking" element={<BookingPage />}/>
       <Route path="/" element={
         <>
     <section id="center">
