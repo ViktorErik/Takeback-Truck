@@ -29,23 +29,27 @@ function Steps(){
                 <h1>Give your IKEA products a new life!</h1>
             </div>
             <div className="stepsContainer">
-                <h2>How it works</h2>
+                <div className="stepsTitle">
+                    <h2>How it works</h2>
+                </div>
                 <div className="stepList">
-                {steps.map((step)=> (
+                    {steps.map((step)=> (
                     <div className="step" key={step.number}>
                         <div className="stepContent">
                             <h3>{step.text}</h3>
                         </div>
                     </div>
-                ))} 
+                    ))} 
+                </div>
+                            
+                <div className="button">
+                    <Link to="/booking" className="bookButton">Book a pickup</Link>
+                </div>
             </div>
-            </div>
-            <div className="stepsImage">
-                <img src={homePageImg} alt="IKEA pickup"/>
-            </div>
-            
-            <div className="button">
-                <Link to="/booking" className="bookButton">Book a pickup</Link>
+            <div className="stepsImageContainer">
+                <div className="stepsImage">
+                    <img src={homePageImg} alt="IKEA pickup"/>
+                </div>
             </div>
         </div>
     </section>
