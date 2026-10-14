@@ -7,10 +7,12 @@ function header(){
     return(
         <header className="header">
             <nav className="header_nav">
-                <img src={logoIMG} className="logo" width="150" height="75" alt=""/>
+                <a href="/">
+                    <img src={logoIMG} className="logo" width="150" height="75" alt=""/>
+                </a>
                 <Link to="/informationPage">Info</Link>
-                <a href="/">FAQ</a>
-                <a href="/">Book pickup</a>
+                <a href="/#faq-container">FAQ</a>
+                <a href="/booking">Book pickup</a>
             </nav>
 
             <button className="login">

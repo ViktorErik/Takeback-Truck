@@ -26,41 +26,44 @@ function App(){
       <Route path="/booking" element={<BookingPage />}/>
       <Route path="/" element={
         <>
-    <section id="center">
-      <div className="infoSection">
-        <Steps/>
-      </div>
-    </section>
-    <section id="sustainability-section">
-      <div className="truckIMG-container">
-        <img src={truckIMG} className="truckIMG" alt=""/>
-      </div>
-      <div className="sustainability-text-container">
-        HEJEHEHE
-      </div>
-    </section>
-    <section id="map-section">
-      <div className="map-text-container">
-        <div className="map-text-header">
-          <h2>Find your nearest IKEA pickup-station</h2>
-        </div>
-        <div className="map-text-body">
-          <p>We have a wide range of pickup-stations across the country. Find the one closest to you and start your journey towards a more sustainable future.</p>
-        </div>
-      </div>
-      <div className="map-container">
-        <MapComponent />
-      </div>
-    </section>
+          <section id="center">
+            <div className="infoSection">
+              <Steps/>
+            </div>
+          </section>
+          <section id="sustainability-section">
+            <div className="truckIMG-container">
+              <img src={truckIMG} className="truckIMG" alt=""/>
+            </div>
+            <div className="sustainability-text-container">
+              HEJEHEHE
+            </div>
+          </section>
+          <section id="map-section">
+            <div className="map-text-container">
+              <div className="map-text-header">
+                <h2>Find your nearest IKEA pickup-station</h2>
+              </div>
+              <div className="map-text-body">
+                <p>We have a wide range of pickup-stations across the country. Find the one closest to you and start your journey towards a more sustainable future.</p>
+              </div>
+            </div>
+            <div className="map-container">
+              <MapComponent />
+            </div>
+          </section>
 
-    <div className="bottompadding" style={{ height: '100px' }}></div>
-      <FAQ/>
-      </>
+          <div className="bottompadding" style={{ height: '100px' }}></div>
+          <div id="faq-container">
+            <FAQ/>
+          </div>
+          
+        </>
       }
-      />
-      </Routes>
-      </BrowserRouter>
-      <Footer/>
+    />
+    </Routes>
+    </BrowserRouter>
+    <Footer/>
     </div>
   )
 }
