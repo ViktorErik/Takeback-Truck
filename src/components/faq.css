@@ -5,6 +5,11 @@
   padding: 20px;
 }
 
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 /*
 .faq h2 {
   text-align: center;

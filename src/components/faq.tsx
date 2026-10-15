@@ -4,12 +4,17 @@ import "./FAQ.css";
 const faqData=[
     {
         question: "How does the service work?",
-        answer: "WE BLAH BLAH BLAH",
+        answer: "Read more on the information page.",
     },
     {
     question: "What products can I return?",
     answer:
       "You can return eligible IKEA products that meet our return requirements.",
+    },
+    {
+    question: "What is this great idea called?",
+    answer:
+      "Its the TakeBackTruck of course!",
     },
 ];
 

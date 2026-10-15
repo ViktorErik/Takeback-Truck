@@ -13,7 +13,7 @@ const steps = [
     },
     {
         number: 3,
-        text:"3: Book a time for an IKEA pickup",
+        text:"3: Book a time for IKEA pickup or leave your items at a pickup station",
     },
     {
         number: 4,

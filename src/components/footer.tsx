@@ -4,11 +4,11 @@ function footer(){
     return(
         <footer className="footer">
             <nav className="footer_nav">
-                <a href="/">Info</a>
-                <a href="/">FAQ</a>
-                <a href="/">Book pickup</a>
+                <a href="/informationPage">Info</a>
+                <a href="/#faq-container">FAQ</a>
+                <a href="/booking">Book pickup</a>
             </nav>
-            <h2>Copyright etc</h2>
+            <p>2026 TakeBackTruck | All rights reserved</p>
         </footer>
 
     );
