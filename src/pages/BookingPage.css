@@ -301,6 +301,10 @@
   padding: 32px;
 }
 
+.bk-cal-note {
+  margin-top: 16px;
+}
+
 .bk-datetime-times {
   padding: 32px;
   background: #f7f7f7;

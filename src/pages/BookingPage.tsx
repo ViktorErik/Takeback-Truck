@@ -89,14 +89,30 @@ const DEMO_PRODUCTS: Product[] = [
   { id: "expedit", name: "EXPEDIT", description: "Shelving unit, black-brown, 149x149 cm", articleNumber: "702.758.31", kind: "cubes", grid: [4, 4], color: "#5b4638", discontinued: true },
 ];
 
+// CO2 estimate for the note under the calendar. Assumes a ~30 km round trip
+// to IKEA Kållered, an average car at 170 g CO2/km, and the electric pickup
+// truck at 50 g CO2/km. Free slots add virtually no extra driving since the
+// truck is already passing by on its mass-pickup route; paid slots mean a
+// dedicated trip to and from your address, which still beats driving
+// yourself because the truck runs on electricity.
+const CO2_ROUND_TRIP_KM = 30;
+const CO2_CAR_G_PER_KM = 170;
+const CO2_TRUCK_G_PER_KM = 50;
+const co2IfYouDroveKg = (CO2_ROUND_TRIP_KM * CO2_CAR_G_PER_KM) / 1000;
+const co2DedicatedTripKg = (CO2_ROUND_TRIP_KM * CO2_TRUCK_G_PER_KM) / 1000;
+const co2SavedFreeSlotKg = co2IfYouDroveKg;
+const co2SavedPaidSlotKg = co2IfYouDroveKg - co2DedicatedTripKg;
+
 // TODO backend: GET /api/pickup-slots?date=YYYY-MM-DD
+// Slots with price 0 are times the pickup truck is already on its way to
+// nearby pickup-stations, so a home pickup can be added to the route for free.
 async function fetchTimeSlots(_dateISO: string): Promise<TimeSlot[]> {
   return [
-    { id: "0800-1200", label: "08:00 - 12:00", price: 1099 },
-    { id: "1200-1600", label: "12:00 - 16:00", price: 1099 },
-    { id: "1400-1800", label: "14:00 - 18:00", price: 1099 },
-    { id: "1600-2000", label: "16:00 - 20:00", price: 1099 },
-    { id: "1800-2200", label: "18:00 - 22:00", price: 1099 },
+    { id: "0800-1200", label: "08:00 - 12:00", price: 0 },
+    { id: "1200-1600", label: "12:00 - 16:00", price: 300 },
+    { id: "1400-1800", label: "14:00 - 18:00", price: 300 },
+    { id: "1600-2000", label: "16:00 - 20:00", price: 0 },
+    { id: "1800-2200", label: "18:00 - 22:00", price: 300 },
   ];
 }
 
@@ -958,6 +974,12 @@ export default function BookingPage() {
           <div className="bk-card bk-datetime">
             <div className="bk-datetime-cal">
               <Calendar selected={selectedDate} onSelect={handleSelectDate} />
+              <p className="bk-muted bk-small bk-cal-note">
+                Pick a time when our truck is already passing through on its pickup-station route, and we'll swing by your address for free. Any other time is 300 SEK.
+              </p>
+              <p className="bk-muted bk-small bk-cal-note">
+                Either way, it beats driving it there yourself in an average car: a free slot saves around {co2SavedFreeSlotKg.toFixed(1)} kg of CO₂, and since our truck runs on electricity, even a dedicated 300 SEK trip to your door still saves about {co2SavedPaidSlotKg.toFixed(1)} kg.
+              </p>
             </div>
 
             <div className="bk-datetime-times">
@@ -976,7 +998,9 @@ export default function BookingPage() {
                   <label key={slot.id} className="bk-slot">
                     <input type="radio" name="pickup-slot" value={slot.id} checked={selectedSlot === slot.id} onChange={() => setSelectedSlot(slot.id)} />
                     <span>{slot.label}</span>
-                    {slot.price !== undefined && <span className="bk-slot-price">{formatPrice(slot.price)}</span>}
+                    {slot.price !== undefined && (
+                      <span className="bk-slot-price">{slot.price === 0 ? "Free" : formatPrice(slot.price)}</span>
+                    )}
                   </label>
                 ))}
             </fieldset>
