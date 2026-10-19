@@ -1,6 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
 import "./BookingPage.css";
+import api from "../api.tsx"
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -148,6 +149,13 @@ async function fetchGrade(req: GradeRequest): Promise<GradeResult> {
 // TODO backend: POST /api/bookings (use FormData to send the photos)
 async function submitBooking(payload: BookingPayload): Promise<void> {
   console.log("Booking payload", payload);
+
+  try {
+    await api.post("/api/bookings", payload)
+  }
+  catch (error) {
+    console.log("Error submitting product", error)
+  }
 }
 
 /* ------------------------------------------------------------------ */
