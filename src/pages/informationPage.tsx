@@ -1,5 +1,8 @@
 import './informationPage.css'
 import axel from "../assets/axellinkan.jpg"
+import alva from "../assets/alvalinkan.png"
+import anton from "../assets/antonlinkan.jpg"
+import viktor from "../assets/viktorlinkan.png"
 
 function informationPage()
 {
@@ -25,15 +28,19 @@ function informationPage()
             <div className='team-members-container'>
                 <div className='team-member-card'>
                     <img className ="team-member-image" src={axel} alt="Axel" />
-                    <h2>AXEL</h2>
+                    <h2>Axel Löfstedt</h2>
                 </div>
                 <div className='team-member-card'>
-                    <img className ="team-member-image" src={axel} alt="Axel" />
-                    <h2>AXEL 2</h2>
+                    <img className ="team-member-image" src={alva} alt="Alva" />
+                    <h2>Alva Frödin</h2>
                 </div>
                 <div className='team-member-card'>
-                    <img className ="team-member-image" src={axel} alt="Axel" />
-                    <h2>AXEL 3</h2>
+                    <img className ="team-member-image" src={anton} alt="Anton" />
+                    <h2>Anton Thörnwall</h2>
+                </div>
+                <div className='team-member-card'>
+                    <img className ="team-member-image" src={viktor} alt="Viktor" />
+                    <h2>Viktor Modén</h2>
                 </div>
 
             </div>
