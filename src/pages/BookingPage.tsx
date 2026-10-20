@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import type { ChangeEvent, FormEvent } from "react";
+import type { ChangeEvent, FormEvent, KeyboardEvent } from "react";
 import "./BookingPage.css";
 import api from "../api.tsx"
 
@@ -61,9 +61,23 @@ type GradeResult = {
   credit: number;
 };
 
+type PickupMethod = "station" | "truck";
+
+type Station = {
+  id: string;
+  name: string;
+  address: string;
+  hours: string;
+  distanceMeters: number; // distance from the customer's address
+};
+
+type PickupChoice =
+  | { method: "station"; stationId: string }
+  | { method: "truck"; date: string; timeSlotId: string };
+
 type BookingPayload = {
   customer: Customer;
-  pickup: { date: string; timeSlotId: string };
+  pickup: PickupChoice;
   items: ItemSpec[];
 };
 
@@ -90,6 +104,9 @@ const DEMO_PRODUCTS: Product[] = [
   { id: "expedit", name: "EXPEDIT", description: "Shelving unit, black-brown, 149x149 cm", articleNumber: "702.758.31", kind: "cubes", grid: [4, 4], color: "#5b4638", discontinued: true },
 ];
 
+// Price (SEK) for a pickup by truck at a time when the truck isn't already nearby.
+const TRUCK_PRICE = 499;
+
 // CO2 estimate for the note under the calendar. Assumes a ~30 km round trip
 // to IKEA Kållered, an average car at 170 g CO2/km, and the electric pickup
 // truck at 50 g CO2/km. Free slots add virtually no extra driving since the
@@ -104,16 +121,32 @@ const co2DedicatedTripKg = (CO2_ROUND_TRIP_KM * CO2_TRUCK_G_PER_KM) / 1000;
 const co2SavedFreeSlotKg = co2IfYouDroveKg;
 const co2SavedPaidSlotKg = co2IfYouDroveKg - co2DedicatedTripKg;
 
+// DEMO STATIONS. Placeholder data until the real list of pickup stations exists.
+// The distances stand in for what the backend would calculate from the
+// customer's address. The list is deliberately unsorted: the page sorts it.
+const DEMO_STATIONS: Station[] = [
+  { id: "frolunda", name: "Frölunda Torg", address: "Exempelgatan 8, Göteborg", hours: "Mon–Sat 10:00–19:00", distanceMeters: 7200 },
+  { id: "molndal", name: "Mölndal Centrum", address: "Exempelvägen 12, Mölndal", hours: "Mon–Sun 10:00–20:00", distanceMeters: 650 },
+  { id: "angered", name: "Angered Centrum", address: "Exempelvägen 5, Angered", hours: "Mon–Fri 10:00–18:00", distanceMeters: 15600 },
+  { id: "kallered", name: "Kållered", address: "Exempelvägen 3, Kållered", hours: "Mon–Sun 10:00–20:00", distanceMeters: 3400 },
+  { id: "backaplan", name: "Backaplan", address: "Exempelgatan 21, Göteborg", hours: "Mon–Sun 09:00–21:00", distanceMeters: 11800 },
+];
+
+// TODO backend: GET /api/stations?near=<address>  -> stations with distanceMeters
+async function fetchStations(_address: string): Promise<Station[]> {
+  return DEMO_STATIONS;
+}
+
 // TODO backend: GET /api/pickup-slots?date=YYYY-MM-DD
 // Slots with price 0 are times the pickup truck is already on its way to
 // nearby pickup-stations, so a home pickup can be added to the route for free.
 async function fetchTimeSlots(_dateISO: string): Promise<TimeSlot[]> {
   return [
     { id: "0800-1200", label: "08:00 - 12:00", price: 0 },
-    { id: "1200-1600", label: "12:00 - 16:00", price: 300 },
-    { id: "1400-1800", label: "14:00 - 18:00", price: 300 },
+    { id: "1200-1600", label: "12:00 - 16:00", price: TRUCK_PRICE },
+    { id: "1400-1800", label: "14:00 - 18:00", price: TRUCK_PRICE },
     { id: "1600-2000", label: "16:00 - 20:00", price: 0 },
-    { id: "1800-2200", label: "18:00 - 22:00", price: 300 },
+    { id: "1800-2200", label: "18:00 - 22:00", price: TRUCK_PRICE },
   ];
 }
 
@@ -192,6 +225,9 @@ const MAX_MONTHS_AHEAD = 6; // how far ahead the calendar can go
 
 const formatPrice = (amount: number) => `${amount.toLocaleString("sv-SE")}:-`;
 
+const formatDistance = (meters: number) =>
+  meters < 1000 ? `${Math.round(meters / 10) * 10} m` : `${(meters / 1000).toFixed(1)} km`;
+
 const toISODate = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
@@ -249,6 +285,25 @@ function SearchIcon() {
     <svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true">
       <circle cx="21" cy="21" r="12" />
       <path d="M30 30l11 11" />
+    </svg>
+  );
+}
+
+function PinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </svg>
+  );
+}
+
+function TruckIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M2 6h11v10H2zM13 9h4l3 3v4h-7" />
+      <circle cx="7" cy="17.5" r="1.8" />
+      <circle cx="17" cy="17.5" r="1.8" />
     </svg>
   );
 }
@@ -836,11 +891,121 @@ function ItemCard({
 }
 
 /* ------------------------------------------------------------------ */
+/* Pickup method tabs                                                  */
+/* ------------------------------------------------------------------ */
+
+const METHODS: { id: PickupMethod; label: string; hint: string }[] = [
+  { id: "station", label: "Pick up station", hint: "Drop off your items at a station near you" },
+  { id: "truck", label: "Pick up by truck", hint: "We collect your items at your address" },
+];
+
+function MethodTabs({
+  value,
+  onChange,
+}: {
+  value: PickupMethod;
+  onChange: (method: PickupMethod) => void;
+}) {
+  // Left/right arrow keys switch tab, like a standard tab list
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    e.preventDefault();
+    const next: PickupMethod = value === "station" ? "truck" : "station";
+    onChange(next);
+    document.getElementById(`bk-tab-${next}`)?.focus();
+  };
+
+  return (
+    <div className="bk-tabs" role="tablist" aria-label="Pickup method" onKeyDown={handleKeyDown}>
+      {METHODS.map((m) => {
+        const selected = value === m.id;
+        return (
+          <button
+            key={m.id}
+            id={`bk-tab-${m.id}`}
+            type="button"
+            role="tab"
+            className="bk-tab"
+            aria-selected={selected}
+            aria-controls={`bk-panel-${m.id}`}
+            tabIndex={selected ? 0 : -1}
+            onClick={() => onChange(m.id)}
+          >
+            <span className="bk-tab-icon">{m.id === "station" ? <PinIcon /> : <TruckIcon />}</span>
+            <span className="bk-tab-text">
+              <span className="bk-tab-label">{m.label}</span>
+              <span className="bk-tab-hint">{m.hint}</span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Station list                                                        */
+/* ------------------------------------------------------------------ */
+
+function StationList({
+  stations,
+  loading,
+  selected,
+  onSelect,
+}: {
+  stations: Station[];
+  loading: boolean;
+  selected: string | null;
+  onSelect: (id: string) => void;
+}) {
+  // Always show the nearest station first, whatever order the backend returns
+  const sorted = useMemo(
+    () => [...stations].sort((a, b) => a.distanceMeters - b.distanceMeters),
+    [stations],
+  );
+
+  return (
+    <div className="bk-card bk-stations">
+      <p className="bk-muted bk-small bk-stations-note">Sorted by distance from your address, nearest first.</p>
+
+      {loading && <p className="bk-muted">Loading stations…</p>}
+      {!loading && sorted.length === 0 && <p className="bk-muted">No stations found.</p>}
+
+      {!loading && sorted.length > 0 && (
+        <fieldset className="bk-fieldset">
+          <legend className="bk-visually-hidden">Choose station</legend>
+          <div className="bk-station-list">
+            {sorted.map((s, i) => (
+              <label key={s.id} className="bk-station">
+                <input type="radio" name="pickup-station" value={s.id} checked={selected === s.id} onChange={() => onSelect(s.id)} />
+                <span className="bk-station-info">
+                  <span className="bk-station-name">
+                    {s.name}
+                    {i === 0 && <span className="bk-tag">Closest</span>}
+                  </span>
+                  <span className="bk-station-addr">{s.address}</span>
+                </span>
+                <span className="bk-station-hours">{s.hours}</span>
+                <span className="bk-station-distance">{formatDistance(s.distanceMeters)}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Page                                                                */
 /* ------------------------------------------------------------------ */
 
 export default function BookingPage() {
   const [customer, setCustomer] = useState<Customer>(MOCK_ACCOUNT);
+  const [method, setMethod] = useState<PickupMethod>("station");
+  const [stations, setStations] = useState<Station[]>([]);
+  const [stationsLoading, setStationsLoading] = useState(false);
+  const [selectedStation, setSelectedStation] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [slots, setSlots] = useState<TimeSlot[]>([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
@@ -849,6 +1014,30 @@ export default function BookingPage() {
   const [pickerFor, setPickerFor] = useState<string | null>(null); // id of the item the picker is open for
   const [submitting, setSubmitting] = useState(false);
   const [grades, setGrades] = useState<Record<string, GradeResult | null>>({}); // item id -> latest grade
+
+  // Load stations (with distances from the customer's address) while the station tab is open.
+  // Waits a moment after the address changes so the backend isn't called on every keystroke.
+  useEffect(() => {
+    if (method !== "station") return;
+    let cancelled = false;
+    setStationsLoading(true);
+    const timer = setTimeout(() => {
+      fetchStations(customer.pickupAddress)
+        .then((result) => {
+          if (!cancelled) setStations(result);
+        })
+        .catch(() => {
+          if (!cancelled) setStations([]);
+        })
+        .finally(() => {
+          if (!cancelled) setStationsLoading(false);
+        });
+    }, 400);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [method, customer.pickupAddress]);
 
   // Load time slots whenever the date changes
   useEffect(() => {
@@ -900,8 +1089,12 @@ export default function BookingPage() {
   if (!customer.name.trim()) missing.push("name");
   if (!customer.email.includes("@")) missing.push("e-mail");
   if (!customer.pickupAddress.trim()) missing.push("pick-up address");
-  if (!selectedDate) missing.push("date");
-  else if (!selectedSlot) missing.push("time");
+  if (method === "station") {
+    if (!selectedStation) missing.push("station");
+  } else {
+    if (!selectedDate) missing.push("date");
+    else if (!selectedSlot) missing.push("time");
+  }
   if (items.some((it) => it.product === null)) missing.push("product");
   if (items.some((it) => it.product !== null && ANGLES.some((a) => it.photos[a.id] === null))) {
     missing.push("four photos per item");
@@ -912,14 +1105,21 @@ export default function BookingPage() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (missing.length > 0 || !selectedDate || !selectedSlot) return;
+    if (missing.length > 0) return;
+
+    // Only the chosen method's details are sent
+    let pickup: PickupChoice;
+    if (method === "station") {
+      if (!selectedStation) return;
+      pickup = { method: "station", stationId: selectedStation };
+    } else {
+      if (!selectedDate || !selectedSlot) return;
+      pickup = { method: "truck", date: selectedDate, timeSlotId: selectedSlot };
+    }
+
     setSubmitting(true);
     try {
-      await submitBooking({
-        customer,
-        pickup: { date: selectedDate, timeSlotId: selectedSlot },
-        items,
-      });
+      await submitBooking({ customer, pickup, items });
       // TODO: navigate to the next step in the process
     } finally {
       setSubmitting(false);
@@ -976,47 +1176,61 @@ export default function BookingPage() {
           </div>
         </section>
 
-        {/* Date and time */}
+        {/* Pickup method */}
         <section className="bk-section">
-          <h2 className="bk-h2">Select date and time</h2>
-          <div className="bk-card bk-datetime">
-            <div className="bk-datetime-cal">
-              <Calendar selected={selectedDate} onSelect={handleSelectDate} />
-              <p className="bk-muted bk-small bk-cal-note">
-                Pick a time when our truck is already passing through on its pickup-station route, and we'll swing by your address for free. Any other time is 300 SEK.
-              </p>
-              <p className="bk-muted bk-small bk-cal-note">
-                Either way, it beats driving it there yourself in an average car: a free slot saves around {co2SavedFreeSlotKg.toFixed(1)} kg of CO₂, and since our truck runs on electricity, even a dedicated 300 SEK trip to your door still saves about {co2SavedPaidSlotKg.toFixed(1)} kg.
-              </p>
-            </div>
-
-            <div className="bk-datetime-times">
-            <fieldset className="bk-times">
-              <legend className="bk-times-title">Available delivery times</legend>
-              {selectedDate && <p className="bk-times-date">{formatLongDate(selectedDate)}</p>}
-
-              {!selectedDate && <p className="bk-muted">Select a date to see available times.</p>}
-              {selectedDate && slotsLoading && <p className="bk-muted">Loading times…</p>}
-              {selectedDate && !slotsLoading && slots.length === 0 && (
-                <p className="bk-muted">No times available on this date. Try another day.</p>
-              )}
-
-              {!slotsLoading &&
-                slots.map((slot) => (
-                  <label key={slot.id} className="bk-slot">
-                    <input type="radio" name="pickup-slot" value={slot.id} checked={selectedSlot === slot.id} onChange={() => setSelectedSlot(slot.id)} />
-                    <span>{slot.label}</span>
-                    {slot.price !== undefined && (
-                      <span className="bk-slot-price">{slot.price === 0 ? "Free" : formatPrice(slot.price)}</span>
-                    )}
-                  </label>
-                ))}
-            </fieldset>
-            </div>
-          </div>
+          <h2 className="bk-h2">Choose pickup method</h2>
+          <MethodTabs value={method} onChange={setMethod} />
         </section>
 
-        {/* Items */}
+        {method === "station" ? (
+          /* Pick up station: choose a station */
+          <section className="bk-panel" id="bk-panel-station" role="tabpanel" aria-labelledby="bk-tab-station">
+            <h2 className="bk-h2">Choose station</h2>
+            <StationList stations={stations} loading={stationsLoading} selected={selectedStation} onSelect={setSelectedStation} />
+          </section>
+        ) : (
+          /* Pick up by truck: date and time */
+          <section className="bk-panel" id="bk-panel-truck" role="tabpanel" aria-labelledby="bk-tab-truck">
+            <h2 className="bk-h2">Select date and time</h2>
+            <div className="bk-card bk-datetime">
+              <div className="bk-datetime-cal">
+                <Calendar selected={selectedDate} onSelect={handleSelectDate} />
+                <p className="bk-muted bk-small bk-cal-note">
+                  Pick a time when our truck is already passing through on its pickup-station route, and we'll swing by your address for free. Any other time is {TRUCK_PRICE} SEK.
+                </p>
+                <p className="bk-muted bk-small bk-cal-note">
+                  Either way, it beats driving it there yourself in an average car: a free slot saves around {co2SavedFreeSlotKg.toFixed(1)} kg of CO₂, and since our truck runs on electricity, even a dedicated {TRUCK_PRICE} SEK trip to your door still saves about {co2SavedPaidSlotKg.toFixed(1)} kg.
+                </p>
+              </div>
+
+              <div className="bk-datetime-times">
+                <fieldset className="bk-times">
+                  <legend className="bk-times-title">Available delivery times</legend>
+                  {selectedDate && <p className="bk-times-date">{formatLongDate(selectedDate)}</p>}
+
+                  {!selectedDate && <p className="bk-muted">Select a date to see available times.</p>}
+                  {selectedDate && slotsLoading && <p className="bk-muted">Loading times…</p>}
+                  {selectedDate && !slotsLoading && slots.length === 0 && (
+                    <p className="bk-muted">No times available on this date. Try another day.</p>
+                  )}
+
+                  {!slotsLoading &&
+                    slots.map((slot) => (
+                      <label key={slot.id} className="bk-slot">
+                        <input type="radio" name="pickup-slot" value={slot.id} checked={selectedSlot === slot.id} onChange={() => setSelectedSlot(slot.id)} />
+                        <span>{slot.label}</span>
+                        {slot.price !== undefined && (
+                          <span className="bk-slot-price">{slot.price === 0 ? "Free" : formatPrice(slot.price)}</span>
+                        )}
+                      </label>
+                    ))}
+                </fieldset>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Items (same for both methods) */}
         <section className="bk-section">
           <h2 className="bk-h2">Item specifications</h2>
 
