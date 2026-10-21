@@ -14,6 +14,7 @@ import Steps from "./components/stepGuide";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import InformationPage from "./pages/informationPage";
 import BookingPage from "./pages/BookingPage"; 
+import LoginPage from "./pages/LoginPage";
  
 
 // CO2 comparison shown under the map: 10 people each driving to IKEA Kållered
@@ -35,6 +36,7 @@ function App(){
     <Routes>
       <Route path="/informationPage" element={<InformationPage />}/>
       <Route path="/booking" element={<BookingPage />}/>
+      <Route path="/login" element={<LoginPage />}/>
       <Route path="/" element={
         <>
           <section id="center">
