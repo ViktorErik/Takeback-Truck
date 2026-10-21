@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent, KeyboardEvent } from "react";
 import "./BookingPage.css";
 import api from "../api.tsx"
+import MapComponent from "../components/MapComponent";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -81,21 +82,13 @@ type BookingPayload = {
   items: ItemSpec[];
 };
 
-/* ------------------------------------------------------------------ */
-/* Demo data and backend hooks – replace with real API calls later     */
-/* ------------------------------------------------------------------ */
-
-// TODO: replace with the logged-in user's account data.
 const MOCK_ACCOUNT: Customer = {
   name: "Axel Löf",
   email: "axel.lof@example.com",
   pickupAddress: "Exempelgatan 1, 123 45 Göteborg",
 };
 
-// DEMO PRODUCTS. There is no IKEA product API, so these five stand in for the
-// real catalogue. Article numbers are demo values (IKEA uses different numbers
-// per market). EXPEDIT is included to show how older products are handled.
-// TODO backend: replace with a product search (name / article number).
+
 const DEMO_PRODUCTS: Product[] = [
   { id: "billy", name: "BILLY", description: "Bookcase, white, 80x28x202 cm", articleNumber: "002.638.50", kind: "bookcase" },
   { id: "kallax", name: "KALLAX", description: "Shelving unit, white, 77x147 cm", articleNumber: "802.758.87", kind: "cubes", grid: [2, 4] },
@@ -179,7 +172,6 @@ async function fetchGrade(req: GradeRequest): Promise<GradeResult> {
   return { grade, credit: Math.round(MOCK_BASE_VALUE * factor[grade]) };
 }
 
-// TODO backend: POST /api/bookings (use FormData to send the photos)
 async function submitBooking(payload: BookingPayload): Promise<void> {
   console.log("Booking payload", payload);
 
@@ -1015,6 +1007,18 @@ export default function BookingPage() {
   const [submitting, setSubmitting] = useState(false);
   const [grades, setGrades] = useState<Record<string, GradeResult | null>>({}); // item id -> latest grade
 
+  // Always start at the top, also after a refresh. The browser would otherwise
+  // jump back to where you were, so its scroll restoration is switched off while
+  // this page is open and restored again when you leave it.
+  useEffect(() => {
+    const previous = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+    return () => {
+      window.history.scrollRestoration = previous;
+    };
+  }, []);
+
   // Load stations (with distances from the customer's address) while the station tab is open.
   // Waits a moment after the address changes so the backend isn't called on every keystroke.
   useEffect(() => {
@@ -1160,19 +1164,9 @@ export default function BookingPage() {
             </div>
           </div>
 
-          {/* TODO: replace this placeholder with <MapComponent /> */}
-          <div className="bk-map" role="img" aria-label="Map placeholder">
-            <svg viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <rect width="600" height="420" fill="#e4e8ee" />
-              <g fill="none" stroke="#ffffff" strokeLinecap="round">
-                <path d="M-20 90 C140 120 220 60 360 130 S560 190 640 150" strokeWidth="16" />
-                <path d="M80 440 C120 300 260 250 330 170 S470 40 520 -20" strokeWidth="14" />
-                <path d="M-20 300 C120 280 260 330 380 300 S560 260 640 320" strokeWidth="10" />
-                <path d="M200 -20 C210 80 180 160 150 260" strokeWidth="8" />
-                <path d="M440 440 C430 360 470 300 560 260" strokeWidth="8" />
-              </g>
-              <polygon points="318,150 342,150 330,176" fill="#ffdb00" stroke="#222222" strokeWidth="2" strokeLinejoin="round" />
-            </svg>
+          {/* TODO: replace this placeholder with map */}
+           <div className="bk-map">
+            <MapComponent />
           </div>
         </section>
 
