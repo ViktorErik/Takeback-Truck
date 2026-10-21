@@ -31,7 +31,8 @@ function informationPage()
             </div>
             
             <div className='oof-container'>
-                <img src={oof} alt="Order of Effects" />
+                <h1>Order of Effects</h1>
+                <img className='oof-pic' src={oof} alt="Order of Effects" />
             </div>
             <div className='team-members-container'>
                 <h1>The team</h1>
