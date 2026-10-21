@@ -49,7 +49,11 @@ function App(){
               <img src={truckIMG} className="truckIMG" alt=""/>
             </div>
             <div className="sustainability-text-container">
-              HEJEHEHE
+              IKEA’s electric trucks offer a smarter, cleaner, and more sustainable way to transport products. Unlike traditional diesel trucks, electric trucks produce no exhaust emissions while driving, helping reduce air pollution and greenhouse gas emissions. They are also quieter, making deliveries more environmentally friendly for cities and communities.
+
+Why choose electric trucks? Because the future of transport should be sustainable! By investing in electric vehicles, IKEA can reduce its environmental impact, support climate goals, and show customers that it cares about the planet. Electric trucks can also help lower running costs over time and, when powered by renewable electricity, make deliveries even greener.
+
+Our project promotes a simple but powerful idea: better deliveries, less pollution, and a greener future. IKEA’s electric trucks prove that businesses don’t have to choose between delivering products efficiently and protecting the environment.
             </div>
           </section>
           <section id="map-section">
