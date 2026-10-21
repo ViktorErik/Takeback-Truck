@@ -10,7 +10,7 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-def add_form(id, name, adress):
+def add_form(name, adress, station, itemid, itemname, itemtype):
     conn = None
     cursor = None
 
@@ -19,16 +19,28 @@ def add_form(id, name, adress):
         cursor = conn.cursor(cursor_factory=RealDictCursor)
 
         cursor.execute("""
-            INSERT INTO Pins (id, name, adress)
-            VALUES (%s, %s, %S)
-        """, (id, name, adress)
+            CREATE TABLE IF NOT EXISTS forms (
+            id SERIAL PRIMARY KEY,
+            name TEXT NOT NULL,
+            adress TEXT,
+            station TEXT,
+            itemid TEXT NOT NULL,
+            itemname TEXT NOT NULL,
+            itemtype TEXT NOT NULL,
+            );
+        """)
+
+        cursor.execute("""
+            INSERT INTO forms (name, adress, station, itemid, itemname, itemtype)
+            VALUES (%s, %s, %S, %s, %s, %s, )
+        """, (name, adress, station, itemid, itemname, itemtype)
         )
 
         inserted_id = cursor.fetchone()[0]
 
         conn.commit()
 
-        print(f'Inserted pin with ID: {inserted_id}')
+        print(f'Inserted form with ID: {inserted_id}')
 
     except Exception as e:
         print("Error:", e)
@@ -73,5 +85,33 @@ def get_forms():
 
         if conn:
             conn.close()
+
+
+def delete_forms_table():
+    conn = None
+    cursor = None
+
+    try:
+        conn = psycopg2.connect(DATABASE_URL)
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+        cursor.execute("""
+            DROP TABLE IF EXISTS forms
+                       """)
+
+        conn.commit()
+        
+
+    except Exception as e:
+        print("Error", e)
+
+    finally:
+
+        if cursor:
+            cursor.close()
+
+        if conn:
+            conn.close()
+
 
 print(get_forms())

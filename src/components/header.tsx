@@ -1,9 +1,11 @@
 import "./header.css";
 
 import logoIMG from "../assets/ikea_logo.png"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function header(){
+    const navigate = useNavigate();
+
     return(
         <header className="header">
             <nav className="header_nav">
@@ -15,7 +17,10 @@ function header(){
                 <a href="/booking">Book pickup</a>
             </nav>
 
-            <button className="login">
+            <button
+            className="login"
+            onClick={() => navigate("/login")}
+            >
                 Hello! Log in
             </button>
         </header>
