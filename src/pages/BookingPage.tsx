@@ -1164,7 +1164,7 @@ export default function BookingPage() {
             </div>
           </div>
 
-          {/* TODO: replace this placeholder with map */}
+          {/* TODO: replace this placeholder with interactive map */}
            <div className="bk-map">
             <MapComponent />
           </div>
