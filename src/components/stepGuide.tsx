@@ -10,14 +10,15 @@ const steps = [
   },
   {
     number: 2,
-    title: "Answer questions",
-    description: "about the condition of your products.",
-  },
-  {
-    number: 3,
     title: "Book a time",
     description: "for IKEA pickup or leave your items at a pickup station.",
   },
+  {
+    number: 3,
+    title: "Answer questions",
+    description: "about the condition of your products.",
+  },
+  
   {
     number: 4,
     title: "Get IKEA credits",
