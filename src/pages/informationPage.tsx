@@ -5,6 +5,7 @@ import anton from "../assets/antonlinkan.jpg"
 import viktor from "../assets/viktorlinkan.png"
 import hannes from "../assets/torkellinkan.png"
 import oof from "../assets/Frame 1.png"
+import mikael from "../assets/mikeylinkan.jpg"
 
 function informationPage()
 {
@@ -34,6 +35,14 @@ function informationPage()
                 <h1>Order of Effects</h1>
                 <img className='oof-pic' src={oof} alt="Order of Effects" />
             </div>
+            <div className="video">
+                <iframe
+                    src="https://www.youtube.com/embed/lb7ypaPCMzw"
+                    title="Takeback Truck Demo"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                ></iframe>
+            </div>
             <div className='team-members-container'>
                 <h1>The team</h1>
                 <div className='team-members-card-container'>
@@ -54,7 +63,7 @@ function informationPage()
                         <h2>Viktor Modén</h2>
                     </div>
                     <div className='team-member-card'>
-                        <img className ="team-member-image" src={axel} alt="Mikael" />
+                        <img className ="team-member-image" src={mikael} alt="Mikael" />
                         <h2>Mikael Rutgersson</h2>
                     </div>
                     <div className='team-member-card'>
