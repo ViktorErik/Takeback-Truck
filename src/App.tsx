@@ -31,7 +31,7 @@ const co2SavedKg = co2CarsKg - co2TruckKg;
 function App(){
   return(
     <div className="app">
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
     <Header/>
     <Routes>
       <Route path="/informationPage" element={<InformationPage />}/>

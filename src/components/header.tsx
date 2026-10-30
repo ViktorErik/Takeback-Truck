@@ -6,14 +6,20 @@ import { Link, useNavigate } from "react-router-dom";
 function header(){
     const navigate = useNavigate();
 
+    const goToFaq = () => {
+        setTimeout(() => {
+            document.getElementById("faq-container")?.scrollIntoView({ behavior: "smooth" });
+        }, 50);
+    };
+
     return(
         <header className="header">
             <nav className="header_nav">
-                <a href="/">
+                <Link to="/">
                     <img src={logoIMG} className="logo" width="150" height="75" alt=""/>
-                </a>
-                <a href="/#faq-container">FAQ</a>
-                <a href="/booking">Book pickup</a>
+                </Link>
+                <Link to="/" onClick={goToFaq}>FAQ</Link>
+                <Link to="/booking">Book pickup</Link>
                 <Link to="/informationPage">About us</Link>
             </nav>
 
