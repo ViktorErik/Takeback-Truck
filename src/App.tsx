@@ -84,8 +84,8 @@ Our project promotes a simple but powerful idea: better deliveries, less polluti
       }
     />
     </Routes>
-    </BrowserRouter>
     <Footer/>
+    </BrowserRouter>
     </div>
   )
 }
